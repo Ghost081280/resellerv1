@@ -158,7 +158,8 @@
         .header-right {
             display: flex;
             align-items: center;
-            gap: 2rem;
+            gap: 2.5rem;
+            margin-left: auto;
         }
 
         .partner-info {
@@ -170,11 +171,14 @@
             border-radius: 8px;
             border: 1px solid var(--border);
             backdrop-filter: blur(10px);
+            margin-right: 1rem;
         }
 
         .partner-avatar {
             width: 32px;
             height: 32px;
+            min-width: 32px;
+            min-height: 32px;
             background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
@@ -183,6 +187,7 @@
             font-weight: bold;
             color: var(--bg-darker);
             font-size: 0.75rem;
+            flex-shrink: 0;
         }
 
         .partner-details {
