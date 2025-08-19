@@ -1093,35 +1093,35 @@
                 <div class="quick-actions">
                     <div class="actions-title">Quick Actions</div>
                     <div class="action-buttons">
-                        <a href="customers.html#new" class="action-button">
+                        <a href="#" class="action-button" onclick="showAddCustomer()">
                             <span class="action-icon">➕</span>
                             <div class="action-text">
                                 <div class="action-title">Add New Customer</div>
                                 <div class="action-description">Deploy AI Sentinel-X</div>
                             </div>
                         </a>
-                        <a href="sales.html#demo" class="action-button">
+                        <a href="#" class="action-button" onclick="showScheduleDemo()">
                             <span class="action-icon">🎮</span>
                             <div class="action-text">
                                 <div class="action-title">Schedule Demo</div>
                                 <div class="action-description">Book prospect meeting</div>
                             </div>
                         </a>
-                        <a href="marketing.html#materials" class="action-button">
+                        <a href="#" class="action-button" onclick="showSalesMaterials()">
                             <span class="action-icon">📄</span>
                             <div class="action-text">
                                 <div class="action-title">Sales Materials</div>
                                 <div class="action-description">Brochures & presentations</div>
                             </div>
                         </a>
-                        <a href="training.html" class="action-button">
+                        <a href="#" class="action-button" onclick="showProductTraining()">
                             <span class="action-icon">🎓</span>
                             <div class="action-text">
                                 <div class="action-title">Product Training</div>
                                 <div class="action-description">Certification courses</div>
                             </div>
                         </a>
-                        <a href="support.html#ticket" class="action-button">
+                        <a href="#" class="action-button" onclick="showSupportTicket()">
                             <span class="action-icon">🎫</span>
                             <div class="action-text">
                                 <div class="action-title">Support Ticket</div>
@@ -1580,6 +1580,295 @@
         function supportTicket(company) {
             closeModal();
             alert(`Support ticket creation for ${company} would open here. Direct integration with support system.`);
+        }
+
+        function showScheduleDemo() {
+            showModal('🎮 Schedule Demo', `
+                <form onsubmit="event.preventDefault(); submitDemo();">
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Prospect Company</label>
+                            <input type="text" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Enter company name" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Contact Name</label>
+                                <input type="text" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Contact person" required>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Email</label>
+                                <input type="email" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Email address" required>
+                            </div>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Preferred Date</label>
+                                <input type="date" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Preferred Time</label>
+                                <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                    <option value="">Select time...</option>
+                                    <option value="09:00">9:00 AM</option>
+                                    <option value="10:00">10:00 AM</option>
+                                    <option value="11:00">11:00 AM</option>
+                                    <option value="14:00">2:00 PM</option>
+                                    <option value="15:00">3:00 PM</option>
+                                    <option value="16:00">4:00 PM</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Demo Type</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                <option value="">Select demo type...</option>
+                                <option value="basic">Basic Overview (30 min)</option>
+                                <option value="technical">Technical Deep Dive (60 min)</option>
+                                <option value="custom">Custom Solution Demo (45 min)</option>
+                                <option value="poc">Proof of Concept (90 min)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Special Requirements</label>
+                            <textarea style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); min-height: 80px; resize: vertical;" placeholder="Any specific topics or requirements for the demo..."></textarea>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Schedule Demo</button>
+                        <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function submitDemo() {
+            closeModal();
+            showModal('📅 Demo Scheduled', `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; color: var(--success);">🎮</div>
+                    <h3 style="margin-bottom: 1rem;">Demo scheduled successfully!</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        Demo ID: <strong>DEMO-${Math.floor(Math.random() * 9000) + 1000}</strong>
+                    </p>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        Calendar invitations have been sent to both you and the prospect. 
+                        Demo materials and meeting link will be provided 24 hours before the session.
+                    </p>
+                    <div style="background: rgba(0, 255, 136, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>📋 Pre-Demo Checklist:</strong><br>
+                        • Prepare custom demo environment<br>
+                        • Review prospect's specific use case<br>
+                        • Test video conferencing setup<br>
+                        • Send pre-demo questionnaire
+                    </div>
+                    <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                </div>
+            `);
+        }
+
+        function showSalesMaterials() {
+            showModal('📄 Sales Materials', `
+                <div style="padding: 1rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; text-align: center;">
+                        Access professional sales materials and presentations for AI Sentinel-X
+                    </p>
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <h4 style="color: var(--primary); margin-bottom: 0.5rem;">📊 Product Brochures</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                                Professional brochures for all product tiers
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="btn" onclick="downloadMaterial('essential-brochure')">Essential Plan</button>
+                                <button class="btn" onclick="downloadMaterial('business-brochure')">Business Plan</button>
+                                <button class="btn" onclick="downloadMaterial('enterprise-brochure')">Enterprise Plan</button>
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">🎯 Presentations</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                                Ready-to-use PowerPoint presentations
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="btn" onclick="downloadMaterial('sales-pitch')">Sales Pitch Deck</button>
+                                <button class="btn" onclick="downloadMaterial('technical-overview')">Technical Overview</button>
+                                <button class="btn" onclick="downloadMaterial('roi-calculator')">ROI Calculator</button>
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <h4 style="color: var(--warning); margin-bottom: 0.5rem;">📈 Case Studies</h4>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1rem;">
+                                Real customer success stories and case studies
+                            </p>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <button class="btn" onclick="downloadMaterial('finance-case-study')">Financial Services</button>
+                                <button class="btn" onclick="downloadMaterial('healthcare-case-study')">Healthcare</button>
+                                <button class="btn" onclick="downloadMaterial('enterprise-case-study')">Enterprise</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            `);
+        }
+
+        function showProductTraining() {
+            showModal('🎓 Product Training', `
+                <div style="padding: 1rem;">
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem; text-align: center;">
+                        Enhance your AI Sentinel-X knowledge with our certification courses
+                    </p>
+                    <div style="display: grid; gap: 1rem;">
+                        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h4 style="color: var(--primary); margin-bottom: 0.5rem;">🎯 Sales Fundamentals</h4>
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                        Master the basics of selling AI Sentinel-X
+                                    </p>
+                                </div>
+                                <span style="background: rgba(0, 255, 136, 0.1); color: var(--success); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.75rem;">COMPLETED</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn" onclick="startTraining('sales-fundamentals')">Review Course</button>
+                                <button class="btn" onclick="downloadCertificate('sales-fundamentals')">Download Certificate</button>
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h4 style="color: var(--secondary); margin-bottom: 0.5rem;">⚙️ Technical Deep Dive</h4>
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                        Advanced technical knowledge for complex sales
+                                    </p>
+                                </div>
+                                <span style="background: rgba(255, 170, 0, 0.1); color: var(--warning); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.75rem;">IN PROGRESS</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn btn-primary" onclick="startTraining('technical-deep-dive')">Continue Course</button>
+                                <button class="btn" disabled>Certificate Locked</button>
+                            </div>
+                        </div>
+                        
+                        <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
+                            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                                <div>
+                                    <h4 style="color: var(--accent); margin-bottom: 0.5rem;">🏆 Partner Excellence</h4>
+                                    <p style="color: var(--text-secondary); font-size: 0.9rem;">
+                                        Advanced partner certification program
+                                    </p>
+                                </div>
+                                <span style="background: rgba(255, 255, 255, 0.1); color: var(--text-secondary); padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.75rem;">LOCKED</span>
+                            </div>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn" disabled>Start Course</button>
+                                <button class="btn" disabled>Certificate Locked</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin-top: 2rem; text-align: center;">
+                        <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            `);
+        }
+
+        function showSupportTicket() {
+            showModal('🎫 Create Support Ticket', `
+                <form onsubmit="event.preventDefault(); submitSupportTicket();">
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Issue Category</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                <option value="">Select category...</option>
+                                <option value="technical">Technical Issue</option>
+                                <option value="billing">Billing Question</option>
+                                <option value="deployment">Deployment Support</option>
+                                <option value="training">Training Request</option>
+                                <option value="sales">Sales Support</option>
+                                <option value="general">General Question</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Priority Level</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                <option value="">Select priority...</option>
+                                <option value="low">Low - General question</option>
+                                <option value="medium">Medium - Issue affecting operations</option>
+                                <option value="high">High - Customer facing issue</option>
+                                <option value="critical">Critical - System down</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Customer Affected (Optional)</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);">
+                                <option value="">Select customer...</option>
+                                <option value="techstart">TechStart Inc</option>
+                                <option value="securenet">SecureNet Corp</option>
+                                <option value="cloudbase">CloudBase Ltd</option>
+                                <option value="infosec">InfoSec Partners</option>
+                                <option value="netguard">NetGuard Inc</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Subject</label>
+                            <input type="text" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Brief description of the issue" required>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Detailed Description</label>
+                            <textarea style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); min-height: 120px; resize: vertical;" placeholder="Please provide detailed information about the issue, including steps to reproduce, error messages, and any relevant context..." required></textarea>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Create Ticket</button>
+                        <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function submitSupportTicket() {
+            closeModal();
+            showModal('✅ Support Ticket Created', `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; color: var(--success);">🎫</div>
+                    <h3 style="margin-bottom: 1rem;">Support ticket created successfully!</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        Ticket ID: <strong>#SUP-${Math.floor(Math.random() * 9000) + 1000}</strong>
+                    </p>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        Our support team has been notified and will respond within 4 hours for standard issues,
+                        or within 1 hour for high/critical priority tickets.
+                    </p>
+                    <div style="background: rgba(0, 255, 136, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>📧 What's Next:</strong><br>
+                        • Email confirmation sent to your inbox<br>
+                        • Support team will investigate the issue<br>
+                        • You'll receive updates via email<br>
+                        • Track progress in your support portal
+                    </div>
+                    <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                </div>
+            `);
+        }
+
+        // Helper functions for training and materials
+        function startTraining(courseId) {
+            closeModal();
+            alert(`Training module '${courseId}' would launch here. Integration with LMS coming soon.`);
+        }
+
+        function downloadCertificate(courseId) {
+            alert(`Certificate for '${courseId}' would download here. PDF generation coming soon.`);
+        }
+
+        function downloadMaterial(materialId) {
+            alert(`Material '${materialId}' would download here. Document management system integration coming soon.`);
         }
 
         function showAllActivity() {
