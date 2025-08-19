@@ -1,4 +1,35 @@
-<!DOCTYPE html>
+function showPartnerProfile() {
+            showModal('👤 Partner Profile', `
+                <div style="text-align: center; margin-bottom: 2rem;">
+                    <div style="width: 80px; height: 80px; background: var(--gradient-1); border-radius: 50%; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--bg-darker); font-weight: bold;">TC</div>
+                    <h3 style="margin-bottom: 0.5rem;">TechCorp Solutions</h3>
+                    <div style="color: var(--primary); font-weight: bold; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">Gold Partner</div>
+                </div>
+                <div style="display: grid; gap: 1rem;">
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px;">
+                        <strong>Partner ID:</strong> PARTNER-001
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px;">
+                        <strong>Commission Rate:</strong> 20% (Gold Tier)
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px;">
+                        <strong>Territory:</strong> North America
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px;">
+                        <strong>Partner Since:</strong> March 2024
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px;">
+                        <strong>Total Revenue:</strong> $486,540
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1rem; border-radius: 8px;">
+                        <strong>Next Tier:</strong> Platinum (10 more customers)
+                    </div>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                </div>
+            `);
+        }<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -164,17 +195,24 @@
         .partner-info {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.75rem;
             background: var(--bg-card);
-            padding: 0.8rem 1.5rem;
-            border-radius: 10px;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
             border: 1px solid var(--border);
             backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .partner-info:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
         }
 
         .partner-avatar {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             background: var(--gradient-1);
             border-radius: 50%;
             display: flex;
@@ -182,42 +220,50 @@
             justify-content: center;
             font-weight: bold;
             color: var(--bg-darker);
-            font-size: 0.9rem;
+            font-size: 0.75rem;
+            flex-shrink: 0;
         }
 
         .partner-details {
-            text-align: right;
+            text-align: left;
+            min-width: 0;
         }
 
         .partner-name {
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.2;
         }
 
         .partner-tier {
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            line-height: 1;
         }
 
         .logout-btn {
             background: transparent;
             border: 1px solid rgba(255, 0, 68, 0.3);
-            border-radius: 8px;
-            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
             color: var(--danger);
             cursor: pointer;
             transition: all 0.3s ease;
-            font-size: 0.9rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-weight: 600;
         }
 
         .logout-btn:hover {
             background: rgba(255, 0, 68, 0.1);
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
 
         /* Container */
@@ -460,6 +506,19 @@
             border-radius: 10px;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
+            opacity: 0;
+            animation: slideInFade 0.6s ease forwards;
+        }
+
+        @keyframes slideInFade {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .activity-item:hover {
@@ -929,7 +988,7 @@
             </nav>
 
             <div class="header-right">
-                <div class="partner-info">
+                <div class="partner-info" onclick="showPartnerProfile()">
                     <div class="partner-avatar">TC</div>
                     <div class="partner-details">
                         <div class="partner-name">TechCorp Solutions</div>
@@ -1047,7 +1106,48 @@
                         <button class="btn" onclick="showAllActivity()">View All</button>
                     </div>
                     <div class="activity-feed" id="activityFeed">
-                        <!-- Activity items will be populated by JavaScript -->
+                        <div class="activity-item sale" style="animation-delay: 0s">
+                            <div class="activity-icon sale">💰</div>
+                            <div class="activity-content">
+                                <div class="activity-message">Closed deal with TechStart Inc - Enterprise Plan</div>
+                                <div class="activity-time">2 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item lead" style="animation-delay: 0.1s">
+                            <div class="activity-icon lead">🎯</div>
+                            <div class="activity-content">
+                                <div class="activity-message">New qualified lead: DataFlow Systems</div>
+                                <div class="activity-time">4 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item support" style="animation-delay: 0.2s">
+                            <div class="activity-icon support">🎫</div>
+                            <div class="activity-content">
+                                <div class="activity-message">Support ticket resolved for CloudBase Ltd</div>
+                                <div class="activity-time">6 hours ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item sale" style="animation-delay: 0.3s">
+                            <div class="activity-icon sale">📈</div>
+                            <div class="activity-content">
+                                <div class="activity-message">SecureNet Corp upgraded to Business Plan</div>
+                                <div class="activity-time">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item lead" style="animation-delay: 0.4s">
+                            <div class="activity-icon lead">📞</div>
+                            <div class="activity-content">
+                                <div class="activity-message">Demo scheduled with CyberShield Solutions</div>
+                                <div class="activity-time">1 day ago</div>
+                            </div>
+                        </div>
+                        <div class="activity-item support" style="animation-delay: 0.5s">
+                            <div class="activity-icon support">🔧</div>
+                            <div class="activity-content">
+                                <div class="activity-message">Deployment completed for NetGuard Inc</div>
+                                <div class="activity-time">2 days ago</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1217,6 +1317,94 @@
             { type: 'lead', icon: '📧', message: 'Follow-up email sent to DefenseTech Ltd', time: '3 days ago' }
         ];
 
+        // Activity Feed Manager - Shared System
+        class ActivityFeedManager {
+            constructor() {
+                this.feeds = new Map();
+                this.updateIntervals = new Map();
+            }
+
+            initializeFeed(feedId, maxItems = 6) {
+                this.feeds.set(feedId, {
+                    items: [...activities.slice(0, maxItems)],
+                    maxItems: maxItems,
+                    container: null
+                });
+            }
+
+            setContainer(feedId, containerId) {
+                const feed = this.feeds.get(feedId);
+                if (feed) {
+                    feed.container = document.getElementById(containerId);
+                    this.renderFeed(feedId);
+                }
+            }
+
+            addActivity(feedId, activity) {
+                const feed = this.feeds.get(feedId);
+                if (!feed) return;
+
+                feed.items.unshift(activity);
+                if (feed.items.length > feed.maxItems) {
+                    feed.items.pop();
+                }
+                this.renderFeed(feedId);
+            }
+
+            renderFeed(feedId) {
+                const feed = this.feeds.get(feedId);
+                if (!feed || !feed.container) return;
+
+                feed.container.innerHTML = feed.items.map((activity, index) => `
+                    <div class="activity-item ${activity.type}" style="animation-delay: ${index * 0.1}s">
+                        <div class="activity-icon ${activity.type}">${activity.icon}</div>
+                        <div class="activity-content">
+                            <div class="activity-message">${activity.message}</div>
+                            <div class="activity-time">${activity.time}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            startLiveUpdates(feedId, interval = 120000) {
+                if (this.updateIntervals.has(feedId)) {
+                    clearInterval(this.updateIntervals.get(feedId));
+                }
+
+                const intervalId = setInterval(() => {
+                    this.addRandomActivity(feedId);
+                }, interval);
+
+                this.updateIntervals.set(feedId, intervalId);
+            }
+
+            stopLiveUpdates(feedId) {
+                if (this.updateIntervals.has(feedId)) {
+                    clearInterval(this.updateIntervals.get(feedId));
+                    this.updateIntervals.delete(feedId);
+                }
+            }
+
+            addRandomActivity(feedId) {
+                const newActivities = [
+                    { type: 'lead', icon: '📞', message: 'Inbound call from potential customer', time: 'Just now' },
+                    { type: 'sale', icon: '📧', message: 'Proposal sent to interested prospect', time: 'Just now' },
+                    { type: 'support', icon: '✅', message: 'Customer onboarding completed successfully', time: 'Just now' },
+                    { type: 'lead', icon: '🎯', message: 'Lead qualified through website form', time: 'Just now' },
+                    { type: 'sale', icon: '💰', message: 'New customer signed up for trial', time: 'Just now' },
+                    { type: 'support', icon: '🔧', message: 'Technical issue resolved for existing customer', time: 'Just now' },
+                    { type: 'lead', icon: '📱', message: 'Demo request received via mobile app', time: 'Just now' },
+                    { type: 'sale', icon: '🚀', message: 'Customer upgraded to higher tier plan', time: 'Just now' }
+                ];
+
+                const randomActivity = newActivities[Math.floor(Math.random() * newActivities.length)];
+                this.addActivity(feedId, randomActivity);
+            }
+        }
+
+        // Initialize global activity manager
+        const activityManager = new ActivityFeedManager();
+
         const customers = [
             { company: 'TechStart Inc', contact: 'John Smith', plan: 'Enterprise', status: 'active', mrr: '$2,400', commission: '$480', deployed: '2024-12-15' },
             { company: 'SecureNet Corp', contact: 'Sarah Johnson', plan: 'Business', status: 'active', mrr: '$1,200', commission: '$240', deployed: '2024-11-22' },
@@ -1228,16 +1416,12 @@
         ];
 
         function populateActivityFeed() {
-            const feed = document.getElementById('activityFeed');
-            feed.innerHTML = activities.map((activity, index) => `
-                <div class="activity-item ${activity.type}" style="animation-delay: ${index * 0.1}s">
-                    <div class="activity-icon ${activity.type}">${activity.icon}</div>
-                    <div class="activity-content">
-                        <div class="activity-message">${activity.message}</div>
-                        <div class="activity-time">${activity.time}</div>
-                    </div>
-                </div>
-            `).join('');
+            // Initialize activity feed with manager
+            activityManager.initializeFeed('dashboard-feed', 6);
+            activityManager.setContainer('dashboard-feed', 'activityFeed');
+            
+            // Start live updates every 2 minutes
+            activityManager.startLiveUpdates('dashboard-feed', 120000);
         }
 
         function populateCustomerTable() {
@@ -1502,7 +1686,6 @@
                                 <strong>Status:</strong> <span class="customer-status ${customer.status}">${customer.status}</span>
                             </div>
                             <div>
-                                <strong>Monthly Revenue:</strong> ${customer.mrr}
                             </div>
                             <div>
                                 <strong>Your Commission:</strong> ${customer.commission}
@@ -1527,53 +1710,53 @@
         }
 
         function manageCustomer(company) {
-            showModal(`⚙️ Manage ${company}`, `
+            showModal(\`⚙️ Manage \${company}\`, \`
                 <div style="display: grid; gap: 1rem;">
-                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="contactCustomer('${company}')">
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="contactCustomer('\${company}')">
                         📧 Send Email
                     </button>
-                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="scheduleCall('${company}')">
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="scheduleCall('\${company}')">
                         📞 Schedule Call
                     </button>
-                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="viewDeployment('${company}')">
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="viewDeployment('\${company}')">
                         🔍 View Deployment
                     </button>
-                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="upgradePlan('${company}')">
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="upgradePlan('\${company}')">
                         📈 Upgrade Plan
                     </button>
-                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="supportTicket('${company}')">
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="supportTicket('\${company}')">
                         🎫 Create Support Ticket
                     </button>
                 </div>
                 <div style="margin-top: 2rem;">
                     <button class="btn btn-primary" onclick="closeModal()">Close</button>
                 </div>
-            `);
+            \`);
         }
 
         function contactCustomer(company) {
             closeModal();
-            alert(`Email composer for ${company} would open here. Integration with email system coming soon.`);
+            alert(\`Email composer for \${company} would open here. Integration with email system coming soon.\`);
         }
 
         function scheduleCall(company) {
             closeModal();
-            alert(`Calendar scheduling for ${company} would open here. Integration with calendar system coming soon.`);
+            alert(\`Calendar scheduling for \${company} would open here. Integration with calendar system coming soon.\`);
         }
 
         function viewDeployment(company) {
             closeModal();
-            alert(`Deployment dashboard for ${company} would open here. Shows real-time agent status and metrics.`);
+            alert(\`Deployment dashboard for \${company} would open here. Shows real-time agent status and metrics.\`);
         }
 
         function upgradePlan(company) {
             closeModal();
-            alert(`Plan upgrade options for ${company} would open here. Automated upgrade process available.`);
+            alert(\`Plan upgrade options for \${company} would open here. Automated upgrade process available.\`);
         }
 
         function supportTicket(company) {
             closeModal();
-            alert(`Support ticket creation for ${company} would open here. Direct integration with support system.`);
+            alert(\`Support ticket creation for \${company} would open here. Direct integration with support system.\`);
         }
 
         function showAllActivity() {
@@ -1600,6 +1783,11 @@
 
         // Initialize dashboard on load
         document.addEventListener('DOMContentLoaded', initDashboard);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            activityManager.stopLiveUpdates('dashboard-feed');
+        });
     </script>
 </body>
 </html>
