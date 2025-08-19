@@ -1,0 +1,1605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reseller Portal | AI Sentinel-X</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #00ff88;
+            --secondary: #00ccff;
+            --accent: #7c3aed;
+            --danger: #ff0044;
+            --warning: #ffaa00;
+            --success: #00ff88;
+            --bg-dark: #0a0e1a;
+            --bg-darker: #060912;
+            --bg-card: rgba(10, 20, 40, 0.8);
+            --border: rgba(0, 255, 136, 0.2);
+            --text-primary: #ffffff;
+            --text-secondary: #8892b0;
+            --gradient-1: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-2: linear-gradient(135deg, #7c3aed 0%, #00ccff 100%);
+            --gradient-shield: linear-gradient(135deg, #1a4d2e 0%, #00ff88 50%, #00ccff 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Consolas', 'Monaco', monospace;
+            background: var(--bg-darker);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(0, 255, 136, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(51, 136, 255, 0.02) 0%, transparent 40%),
+                radial-gradient(circle at 40% 40%, rgba(255, 51, 102, 0.02) 0%, transparent 40%);
+            animation: bgShift 30s ease-in-out infinite;
+        }
+
+        @keyframes bgShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.03;
+            background-image: 
+                linear-gradient(rgba(0, 255, 136, 0.2) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 136, 0.2) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: brightness(1); }
+            50% { transform: scale(1.05); filter: brightness(1.2); }
+        }
+
+        .header-center {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .partner-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-card);
+            padding: 0.8rem 1.5rem;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .partner-avatar {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--bg-darker);
+            font-size: 0.9rem;
+        }
+
+        .partner-details {
+            text-align: right;
+        }
+
+        .partner-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .partner-tier {
+            font-size: 0.75rem;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 8px;
+            padding: 0.8rem 1.5rem;
+            color: var(--danger);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255, 0, 68, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Dashboard Grid */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 40px rgba(0, 255, 136, 0.15);
+            border-color: rgba(0, 255, 136, 0.3);
+        }
+
+        .stat-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-weight: 600;
+        }
+
+        .stat-change.positive {
+            color: var(--success);
+        }
+
+        .stat-change.negative {
+            color: var(--danger);
+        }
+
+        .stat-title {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-value.accent {
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .stat-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Sales Pipeline */
+        .sales-pipeline {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .pipeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pipeline-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .pipeline-stages {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .pipeline-stage {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .pipeline-stage:hover {
+            background: rgba(0, 255, 136, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .stage-count {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stage-label {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stage-value {
+            font-size: 0.8rem;
+            color: var(--text-primary);
+            margin-top: 0.25rem;
+        }
+
+        /* Recent Activity */
+        .recent-activity {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .activity-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .activity-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .activity-item:hover {
+            background: rgba(0, 255, 136, 0.05);
+            transform: translateX(4px);
+        }
+
+        .activity-item.sale {
+            border-left-color: var(--success);
+        }
+
+        .activity-item.lead {
+            border-left-color: var(--secondary);
+        }
+
+        .activity-item.support {
+            border-left-color: var(--warning);
+        }
+
+        .activity-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+        }
+
+        .activity-icon.sale {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+        }
+
+        .activity-icon.lead {
+            background: rgba(0, 204, 255, 0.1);
+            color: var(--secondary);
+        }
+
+        .activity-icon.support {
+            background: rgba(255, 170, 0, 0.1);
+            color: var(--warning);
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-message {
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+            color: var(--text-primary);
+        }
+
+        .activity-time {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        /* Commission Tracker */
+        .commission-tracker {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .commission-header {
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .commission-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+        }
+
+        .commission-amount {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .commission-period {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .commission-breakdown {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .commission-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .commission-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .commission-value {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .actions-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .action-button {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 255, 136, 0.05);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .action-button:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.2);
+        }
+
+        .action-icon {
+            font-size: 1.25rem;
+        }
+
+        .action-text {
+            flex: 1;
+        }
+
+        .action-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .action-description {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Full Width Cards */
+        .full-width-section {
+            grid-column: 1 / -1;
+        }
+
+        /* Customer Management */
+        .customer-management {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            margin-bottom: 2rem;
+        }
+
+        .customers-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .customers-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .customer-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .customer-table th {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .customer-table tr {
+            transition: all 0.3s ease;
+        }
+
+        .customer-table tbody tr:hover {
+            background: rgba(0, 255, 136, 0.05);
+        }
+
+        .customer-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(42, 42, 42, 0.5);
+            font-size: 0.9rem;
+        }
+
+        .customer-status {
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .customer-status.active {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .customer-status.trial {
+            background: rgba(255, 170, 0, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(255, 170, 0, 0.3);
+        }
+
+        .customer-status.inactive {
+            background: rgba(255, 0, 68, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 0, 68, 0.3);
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn:hover {
+            background: var(--primary);
+            color: var(--bg-darker);
+            border-color: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--bg-darker);
+            border-color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+            border-color: var(--secondary);
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlide 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+        }
+
+        @keyframes modalSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+
+        .modal-close:hover {
+            color: var(--danger);
+            background: rgba(255, 0, 68, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-center {
+                display: none;
+            }
+            
+            .quick-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .pipeline-stages {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation"></div>
+    <div class="grid-bg"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🤝</span>
+                AI SENTINEL-X | RESELLER
+            </div>
+            
+            <nav class="nav-links">
+                <a href="#" class="nav-link active">Dashboard</a>
+                <a href="customers.html" class="nav-link">Customers</a>
+                <a href="sales.html" class="nav-link">Sales</a>
+                <a href="commissions.html" class="nav-link">Commissions</a>
+                <a href="marketing.html" class="nav-link">Marketing</a>
+                <a href="support.html" class="nav-link">Support</a>
+                <a href="training.html" class="nav-link">Training</a>
+                <a href="reports.html" class="nav-link">Reports</a>
+            </nav>
+
+            <div class="header-right">
+                <div class="partner-info">
+                    <div class="partner-avatar">TC</div>
+                    <div class="partner-details">
+                        <div class="partner-name">TechCorp Solutions</div>
+                        <div class="partner-tier">Gold Partner</div>
+                    </div>
+                </div>
+                
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Quick Stats -->
+        <div class="quick-stats">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">💰</div>
+                    <div class="stat-change positive">
+                        <span>↑</span> 23%
+                    </div>
+                </div>
+                <h3 class="stat-title">Monthly Revenue</h3>
+                <div class="stat-value accent">$47,820</div>
+                <div class="stat-subtitle">From 23 active customers</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">🎯</div>
+                    <div class="stat-change positive">
+                        <span>↑</span> 12%
+                    </div>
+                </div>
+                <h3 class="stat-title">Commission Earned</h3>
+                <div class="stat-value">$9,564</div>
+                <div class="stat-subtitle">20% commission rate</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">👥</div>
+                    <div class="stat-change positive">
+                        <span>↑</span> 8%
+                    </div>
+                </div>
+                <h3 class="stat-title">Active Customers</h3>
+                <div class="stat-value">23</div>
+                <div class="stat-subtitle">5 new this month</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-header">
+                    <div class="stat-icon">📈</div>
+                    <div class="stat-change positive">
+                        <span>↑</span> 15%
+                    </div>
+                </div>
+                <h3 class="stat-title">Conversion Rate</h3>
+                <div class="stat-value">67%</div>
+                <div class="stat-subtitle">Above average</div>
+            </div>
+        </div>
+
+        <!-- Dashboard Grid -->
+        <div class="dashboard-grid">
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Sales Pipeline -->
+                <div class="sales-pipeline">
+                    <div class="pipeline-header">
+                        <h2 class="pipeline-title">
+                            <span>🚀</span>
+                            <span>Sales Pipeline</span>
+                        </h2>
+                        <button class="btn btn-primary" onclick="showAddLead()">Add Lead</button>
+                    </div>
+                    <div class="pipeline-stages">
+                        <div class="pipeline-stage" onclick="showStageDetails('leads')">
+                            <div class="stage-count">12</div>
+                            <div class="stage-label">Leads</div>
+                            <div class="stage-value">$24,000 potential</div>
+                        </div>
+                        <div class="pipeline-stage" onclick="showStageDetails('qualified')">
+                            <div class="stage-count">8</div>
+                            <div class="stage-label">Qualified</div>
+                            <div class="stage-value">$16,000 potential</div>
+                        </div>
+                        <div class="pipeline-stage" onclick="showStageDetails('proposal')">
+                            <div class="stage-count">4</div>
+                            <div class="stage-label">Proposal</div>
+                            <div class="stage-value">$8,000 potential</div>
+                        </div>
+                        <div class="pipeline-stage" onclick="showStageDetails('negotiation')">
+                            <div class="stage-count">2</div>
+                            <div class="stage-label">Negotiation</div>
+                            <div class="stage-value">$4,000 potential</div>
+                        </div>
+                        <div class="pipeline-stage" onclick="showStageDetails('closed')">
+                            <div class="stage-count">3</div>
+                            <div class="stage-label">Closed Won</div>
+                            <div class="stage-value">$6,000 this month</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="recent-activity">
+                    <div class="activity-header">
+                        <h2 class="activity-title">
+                            <span>📊</span>
+                            <span>Recent Activity</span>
+                        </h2>
+                        <button class="btn" onclick="showAllActivity()">View All</button>
+                    </div>
+                    <div class="activity-feed" id="activityFeed">
+                        <!-- Activity items will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Commission Tracker -->
+                <div class="commission-tracker">
+                    <div class="commission-header">
+                        <div class="commission-title">Commission This Month</div>
+                        <div class="commission-amount">$9,564</div>
+                        <div class="commission-period">January 2025</div>
+                    </div>
+                    <div class="commission-breakdown">
+                        <div class="commission-item">
+                            <span class="commission-label">New Sales</span>
+                            <span class="commission-value">$7,200</span>
+                        </div>
+                        <div class="commission-item">
+                            <span class="commission-label">Renewals</span>
+                            <span class="commission-value">$1,800</span>
+                        </div>
+                        <div class="commission-item">
+                            <span class="commission-label">Upgrades</span>
+                            <span class="commission-value">$564</span>
+                        </div>
+                        <div class="commission-item">
+                            <span class="commission-label">Bonuses</span>
+                            <span class="commission-value">$0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="quick-actions">
+                    <div class="actions-title">Quick Actions</div>
+                    <div class="action-buttons">
+                        <a href="customers.html#new" class="action-button">
+                            <span class="action-icon">➕</span>
+                            <div class="action-text">
+                                <div class="action-title">Add New Customer</div>
+                                <div class="action-description">Deploy AI Sentinel-X</div>
+                            </div>
+                        </a>
+                        <a href="sales.html#demo" class="action-button">
+                            <span class="action-icon">🎮</span>
+                            <div class="action-text">
+                                <div class="action-title">Schedule Demo</div>
+                                <div class="action-description">Book prospect meeting</div>
+                            </div>
+                        </a>
+                        <a href="marketing.html#materials" class="action-button">
+                            <span class="action-icon">📄</span>
+                            <div class="action-text">
+                                <div class="action-title">Sales Materials</div>
+                                <div class="action-description">Brochures & presentations</div>
+                            </div>
+                        </a>
+                        <a href="training.html" class="action-button">
+                            <span class="action-icon">🎓</span>
+                            <div class="action-text">
+                                <div class="action-title">Product Training</div>
+                                <div class="action-description">Certification courses</div>
+                            </div>
+                        </a>
+                        <a href="support.html#ticket" class="action-button">
+                            <span class="action-icon">🎫</span>
+                            <div class="action-text">
+                                <div class="action-title">Support Ticket</div>
+                                <div class="action-description">Get technical help</div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Management -->
+        <div class="customer-management full-width-section">
+            <div class="customers-header">
+                <h2 class="customers-title">
+                    <span>👥</span>
+                    <span>Customer Management</span>
+                </h2>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn" onclick="exportCustomers()">Export</button>
+                    <button class="btn btn-primary" onclick="showAddCustomer()">Add Customer</button>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="customer-table">
+                    <thead>
+                        <tr>
+                            <th>Company</th>
+                            <th>Contact</th>
+                            <th>Plan</th>
+                            <th>Status</th>
+                            <th>MRR</th>
+                            <th>Commission</th>
+                            <th>Deployed</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTableBody">
+                        <!-- Customer rows will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Modal Title</h2>
+                <span class="modal-close" onclick="closeModal()">×</span>
+            </div>
+            <div id="modalBody">
+                <!-- Modal content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check authentication
+        function checkAuth() {
+            const auth = localStorage.getItem('reseller_auth');
+            if (!auth) {
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            const authData = JSON.parse(auth);
+            // Check if login is still valid (24 hours)
+            const loginTime = new Date(authData.loginTime);
+            const now = new Date();
+            const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursDiff > 24) {
+                localStorage.removeItem('reseller_auth');
+                window.location.href = 'index.html';
+                return false;
+            }
+            
+            return true;
+        }
+
+        // Initialize dashboard
+        function initDashboard() {
+            if (!checkAuth()) return;
+            
+            populateActivityFeed();
+            populateCustomerTable();
+            startLiveUpdates();
+        }
+
+        // Sample data
+        const activities = [
+            { type: 'sale', icon: '💰', message: 'Closed deal with TechStart Inc - Enterprise Plan', time: '2 hours ago' },
+            { type: 'lead', icon: '🎯', message: 'New qualified lead: DataFlow Systems', time: '4 hours ago' },
+            { type: 'support', icon: '🎫', message: 'Support ticket resolved for CloudBase Ltd', time: '6 hours ago' },
+            { type: 'sale', icon: '📈', message: 'SecureNet Corp upgraded to Business Plan', time: '1 day ago' },
+            { type: 'lead', icon: '📞', message: 'Demo scheduled with CyberShield Solutions', time: '1 day ago' },
+            { type: 'support', icon: '🔧', message: 'Deployment completed for NetGuard Inc', time: '2 days ago' },
+            { type: 'sale', icon: '🎉', message: 'Renewal confirmed: InfoSec Partners - $2,400/mo', time: '3 days ago' },
+            { type: 'lead', icon: '📧', message: 'Follow-up email sent to DefenseTech Ltd', time: '3 days ago' }
+        ];
+
+        const customers = [
+            { company: 'TechStart Inc', contact: 'John Smith', plan: 'Enterprise', status: 'active', mrr: '$2,400', commission: '$480', deployed: '2024-12-15' },
+            { company: 'SecureNet Corp', contact: 'Sarah Johnson', plan: 'Business', status: 'active', mrr: '$1,200', commission: '$240', deployed: '2024-11-22' },
+            { company: 'CloudBase Ltd', contact: 'Mike Wilson', plan: 'Essential', status: 'active', mrr: '$600', commission: '$120', deployed: '2024-10-08' },
+            { company: 'InfoSec Partners', contact: 'Emily Davis', plan: 'Enterprise', status: 'active', mrr: '$2,400', commission: '$480', deployed: '2024-09-12' },
+            { company: 'NetGuard Inc', contact: 'David Brown', plan: 'Business', status: 'active', mrr: '$1,200', commission: '$240', deployed: '2025-01-10' },
+            { company: 'CyberFirst Co', contact: 'Lisa Anderson', plan: 'Essential', status: 'trial', mrr: '$0', commission: '$0', deployed: '2025-01-15' },
+            { company: 'DataFlow Systems', contact: 'Robert Taylor', plan: 'Business', status: 'inactive', mrr: '$0', commission: '$0', deployed: 'N/A' }
+        ];
+
+        function populateActivityFeed() {
+            const feed = document.getElementById('activityFeed');
+            feed.innerHTML = activities.map((activity, index) => `
+                <div class="activity-item ${activity.type}" style="animation-delay: ${index * 0.1}s">
+                    <div class="activity-icon ${activity.type}">${activity.icon}</div>
+                    <div class="activity-content">
+                        <div class="activity-message">${activity.message}</div>
+                        <div class="activity-time">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function populateCustomerTable() {
+            const tbody = document.getElementById('customerTableBody');
+            tbody.innerHTML = customers.map(customer => `
+                <tr onclick="showCustomerDetails('${customer.company}')">
+                    <td><strong>${customer.company}</strong></td>
+                    <td>${customer.contact}</td>
+                    <td>${customer.plan}</td>
+                    <td><span class="customer-status ${customer.status}">${customer.status}</span></td>
+                    <td>${customer.mrr}</td>
+                    <td>${customer.commission}</td>
+                    <td>${customer.deployed}</td>
+                    <td>
+                        <button class="btn" onclick="event.stopPropagation(); manageCustomer('${customer.company}')">Manage</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function startLiveUpdates() {
+            // Update stats periodically
+            setInterval(() => {
+                updateRealtimeStats();
+            }, 30000); // Every 30 seconds
+            
+            // Add new activity occasionally
+            setInterval(() => {
+                addRandomActivity();
+            }, 120000); // Every 2 minutes
+        }
+
+        function updateRealtimeStats() {
+            // Simulate small changes in stats
+            const stats = document.querySelectorAll('.stat-value');
+            stats.forEach(stat => {
+                if (stat.textContent.includes('
+                ) && Math.random() > 0.7) {
+                    const current = parseFloat(stat.textContent.replace(/[$,]/g, ''));
+                    const change = (Math.random() - 0.5) * 100;
+                    const newValue = Math.max(0, current + change);
+                    stat.textContent = '
+                 + newValue.toLocaleString();
+                }
+            });
+        }
+
+        function addRandomActivity() {
+            const newActivities = [
+                { type: 'lead', icon: '📞', message: 'Inbound call from potential customer', time: 'Just now' },
+                { type: 'sale', icon: '📧', message: 'Proposal sent to interested prospect', time: 'Just now' },
+                { type: 'support', icon: '✅', message: 'Customer onboarding completed successfully', time: 'Just now' },
+                { type: 'lead', icon: '🎯', message: 'Lead qualified through website form', time: 'Just now' }
+            ];
+            
+            const randomActivity = newActivities[Math.floor(Math.random() * newActivities.length)];
+            activities.unshift(randomActivity);
+            if (activities.length > 8) activities.pop();
+            populateActivityFeed();
+        }
+
+        // Modal Functions
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.remove('active');
+        }
+
+        // Action Functions
+        function showAddLead() {
+            showModal('🎯 Add New Lead', `
+                <form onsubmit="event.preventDefault(); submitLead();">
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Company Name</label>
+                            <input type="text" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Enter company name" required>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Contact Person</label>
+                            <input type="text" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Enter contact name" required>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Email</label>
+                            <input type="email" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Enter email address" required>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Phone</label>
+                            <input type="tel" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Enter phone number">
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Lead Source</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                <option value="">Select source...</option>
+                                <option value="website">Website</option>
+                                <option value="referral">Referral</option>
+                                <option value="coldcall">Cold Call</option>
+                                <option value="event">Event/Trade Show</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Estimated Budget</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                <option value="">Select budget range...</option>
+                                <option value="500-1000">$500 - $1,000/mo</option>
+                                <option value="1000-2500">$1,000 - $2,500/mo</option>
+                                <option value="2500-5000">$2,500 - $5,000/mo</option>
+                                <option value="5000+">$5,000+/mo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Notes</label>
+                            <textarea style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); min-height: 80px; resize: vertical;" placeholder="Additional notes about the lead..."></textarea>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Add Lead</button>
+                        <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function submitLead() {
+            closeModal();
+            showModal('✅ Lead Added', `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; color: var(--success);">🎯</div>
+                    <h3 style="margin-bottom: 1rem;">Lead added successfully!</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        The lead has been added to your pipeline and will appear in your sales dashboard.
+                        You'll receive follow-up reminders and can track progress through the sales process.
+                    </p>
+                    <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                </div>
+            `);
+        }
+
+        function showAddCustomer() {
+            showModal('➕ Add New Customer', `
+                <form onsubmit="event.preventDefault(); submitCustomer();">
+                    <div style="display: grid; gap: 1rem;">
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Company Name</label>
+                            <input type="text" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Enter company name" required>
+                        </div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Contact Name</label>
+                                <input type="text" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Contact person" required>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Email</label>
+                                <input type="email" style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" placeholder="Email address" required>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Plan Selection</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                <option value="">Select plan...</option>
+                                <option value="essential">Essential - $29/mo (Single Server)</option>
+                                <option value="business">Business - $149/mo (Multi-Site)</option>
+                                <option value="enterprise">Enterprise - $499/mo (Global Infrastructure)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Deployment Type</label>
+                            <select style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary);" required>
+                                <option value="">Select deployment...</option>
+                                <option value="cloud">Cloud Deployment (Recommended)</option>
+                                <option value="onprem">On-Premises</option>
+                                <option value="hybrid">Hybrid Cloud</option>
+                                <option value="managed">Fully Managed Service</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; color: var(--text-secondary);">Special Requirements</label>
+                            <textarea style="width: 100%; padding: 0.75rem; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 6px; color: var(--text-primary); min-height: 80px; resize: vertical;" placeholder="Any special requirements or notes..."></textarea>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Deploy Customer</button>
+                        <button type="button" class="btn" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            `);
+        }
+
+        function submitCustomer() {
+            closeModal();
+            showModal('🚀 Customer Deployment Started', `
+                <div style="text-align: center; padding: 2rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem; color: var(--success);">🚀</div>
+                    <h3 style="margin-bottom: 1rem;">Deployment initiated!</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        Customer ID: <strong>CUST-${Math.floor(Math.random() * 9000) + 1000}</strong>
+                    </p>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">
+                        AI Sentinel-X is being deployed for the customer. They will receive login credentials
+                        and setup instructions via email. The deployment typically takes 15-30 minutes.
+                    </p>
+                    <div style="background: rgba(0, 255, 136, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                        <strong>✅ Next Steps:</strong><br>
+                        • Customer receives welcome email<br>
+                        • Commission tracking begins<br>
+                        • Customer appears in your dashboard<br>
+                        • 30-day support period starts
+                    </div>
+                    <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                </div>
+            `);
+        }
+
+        function showStageDetails(stage) {
+            const stageData = {
+                leads: { count: 12, potential: '$24,000', description: 'Initial prospects in early stage contact' },
+                qualified: { count: 8, potential: '$16,000', description: 'Qualified leads with confirmed budget and timeline' },
+                proposal: { count: 4, potential: '$8,000', description: 'Proposals sent and under review' },
+                negotiation: { count: 2, potential: '$4,000', description: 'Active contract negotiations' },
+                closed: { count: 3, potential: '$6,000', description: 'Successfully closed deals this month' }
+            };
+            
+            const data = stageData[stage];
+            showModal(`📊 ${stage.charAt(0).toUpperCase() + stage.slice(1)} Stage Details`, `
+                <div style="text-align: center; padding: 1rem;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">${data.count}</div>
+                    <h3 style="margin-bottom: 1rem; text-transform: capitalize;">${stage}</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 2rem;">${data.description}</p>
+                    <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                        <div style="font-size: 1.5rem; font-weight: bold; color: var(--primary); margin-bottom: 0.5rem;">${data.potential}</div>
+                        <div style="color: var(--text-secondary);">Total Pipeline Value</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                </div>
+            `);
+        }
+
+        function showCustomerDetails(company) {
+            const customer = customers.find(c => c.company === company);
+            if (!customer) return;
+            
+            showModal(`👥 ${company} Details`, `
+                <div style="display: grid; gap: 1.5rem;">
+                    <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px;">
+                        <h3 style="margin-bottom: 1rem; color: var(--primary);">Customer Information</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem;">
+                            <div>
+                                <strong>Company:</strong> ${customer.company}
+                            </div>
+                            <div>
+                                <strong>Contact:</strong> ${customer.contact}
+                            </div>
+                            <div>
+                                <strong>Plan:</strong> ${customer.plan}
+                            </div>
+                            <div>
+                                <strong>Status:</strong> <span class="customer-status ${customer.status}">${customer.status}</span>
+                            </div>
+                            <div>
+                                <strong>Monthly Revenue:</strong> ${customer.mrr}
+                            </div>
+                            <div>
+                                <strong>Your Commission:</strong> ${customer.commission}
+                            </div>
+                        </div>
+                    </div>
+                    <div style="background: var(--bg-card); padding: 1.5rem; border-radius: 12px;">
+                        <h3 style="margin-bottom: 1rem; color: var(--secondary);">Deployment Details</h3>
+                        <div>
+                            <strong>Deployed:</strong> ${customer.deployed}<br>
+                            <strong>Agent ID:</strong> SX-${Math.floor(Math.random() * 9000) + 1000}<br>
+                            <strong>Encryption:</strong> Hybrid Mode Active<br>
+                            <strong>Last Contact:</strong> ${Math.floor(Math.random() * 30)} days ago
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                        <button class="btn" onclick="contactCustomer('${company}')">Contact Customer</button>
+                    </div>
+                </div>
+            `);
+        }
+
+        function manageCustomer(company) {
+            showModal(`⚙️ Manage ${company}`, `
+                <div style="display: grid; gap: 1rem;">
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="contactCustomer('${company}')">
+                        📧 Send Email
+                    </button>
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="scheduleCall('${company}')">
+                        📞 Schedule Call
+                    </button>
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="viewDeployment('${company}')">
+                        🔍 View Deployment
+                    </button>
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="upgradePlan('${company}')">
+                        📈 Upgrade Plan
+                    </button>
+                    <button class="btn" style="padding: 1rem; text-align: left;" onclick="supportTicket('${company}')">
+                        🎫 Create Support Ticket
+                    </button>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <button class="btn btn-primary" onclick="closeModal()">Close</button>
+                </div>
+            `);
+        }
+
+        function contactCustomer(company) {
+            closeModal();
+            alert(`Email composer for ${company} would open here. Integration with email system coming soon.`);
+        }
+
+        function scheduleCall(company) {
+            closeModal();
+            alert(`Calendar scheduling for ${company} would open here. Integration with calendar system coming soon.`);
+        }
+
+        function viewDeployment(company) {
+            closeModal();
+            alert(`Deployment dashboard for ${company} would open here. Shows real-time agent status and metrics.`);
+        }
+
+        function upgradePlan(company) {
+            closeModal();
+            alert(`Plan upgrade options for ${company} would open here. Automated upgrade process available.`);
+        }
+
+        function supportTicket(company) {
+            closeModal();
+            alert(`Support ticket creation for ${company} would open here. Direct integration with support system.`);
+        }
+
+        function showAllActivity() {
+            window.location.href = 'sales.html#activity';
+        }
+
+        function exportCustomers() {
+            alert('Customer export feature would download CSV/Excel file with all customer data and commission details.');
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('reseller_auth');
+                window.location.href = 'index.html';
+            }
+        }
+
+        // Close modal on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initialize dashboard on load
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>
